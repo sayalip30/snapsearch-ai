@@ -1,0 +1,120 @@
+/* Reset default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f4f4f4;
+}
+
+/* Container Box */
+.container {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+}
+
+/* Headings */
+h1 {
+    margin-bottom: 20px;
+}
+
+/* Form Boxes */
+.login-box, .signup-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Input Fields */
+input, select {
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Buttons */
+button {
+    padding: 10px;
+    width: 100%;
+    background: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Profile Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #007BFF;
+    padding: 10px 20px;
+    color: white;
+}
+
+.profile a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.profile a:hover {
+    text-decoration: underline;
+}
+
+/* Homepage Options */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    display: block;
+    text-decoration: none;
+    color: white;
+    background: #28a745;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background: #218838;
+}
+
+/* Sign-up Link */
+p {
+    margin-top: 10px;
+}
+
+p a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
