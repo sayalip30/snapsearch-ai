@@ -1,6 +1,4 @@
-SELECT DATABASE();
 
-
-
-USE face_matching;
-SELECT *FROM face;
+USE snapsearch;
+SHOW TABLES;
+SELECT * FROM matched_faces

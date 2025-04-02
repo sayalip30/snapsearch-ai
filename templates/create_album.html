@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Album - SnapSearch AI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #ff6b6b, #6b6bff, #42b883, #ff7eb3);
+            background-size: 400% 400%;
+            animation: gradientBG 8s ease infinite;
+            color: white;
+            text-align: center;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        input {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        button {
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            background: linear-gradient(90deg, #6b6bff, #4b4bff);
+            color: white;
+            transition: 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #4b4bff, #2e2eff);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(75, 75, 255, 0.4);
+        }
+
+        a {
+            color: #ff7eb3;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            margin-top: 15px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Create Album</h1>
+        <form action="{{ url_for('upload_album') }}" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="album_id" value="{{ album_id }}">
+    <input type="file" name="images" multiple>
+    <button type="submit">Upload</button>
+</form>
+
+        
+
+        <a href="{{ url_for('homepage') }}">Back to Home</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Album View</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .image-container img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            transition: transform 0.2s;
+        }
+        .image-container img:hover {
+            transform: scale(1.1);
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Album: {{ album_id }}</h2>
+
+{% if uploaded_images %}
+    <h3>Uploaded Images</h3>
+    <div>
+        {% for img_url in uploaded_images %}
+            <img src="{{ img_url }}" alt="Album Image" width="200">
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No images uploaded yet.</p>
+{% endif %}
+
+{% if matched_faces %}
+    <h3>Matched Faces</h3>
+    <div>
+        {% for match_url in matched_faces %}
+            <img src="{{ match_url }}" alt="Matched Face" width="200">
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No matched faces found.</p>
+{% endif %}
+
+
+ 
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Matched Faces</h3>
+        <div class="image-container">
+            {% if matched_faces %}
+                {% for image in matched_faces %}
+                    <img src="{{ image }}" alt="Matched Face">
+                {% endfor %}
+            {% else %}
+                <p>No matched faces found in this album.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
