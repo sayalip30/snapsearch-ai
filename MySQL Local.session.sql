@@ -1,4 +1,5 @@
+USE face_matching;
 
-USE snapsearch;
-SHOW TABLES;
-SELECT * FROM matched_faces
+SELECT * FROM face;
+SELECT * FROM album_images;
+SELECT * FROM user_albums;

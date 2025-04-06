@@ -106,12 +106,12 @@
 <body>
 
     <div class="container">
-        <h1>Create Album</h1>
-        <form action="{{ url_for('upload_album') }}" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="album_id" value="{{ album_id }}">
-    <input type="file" name="images" multiple>
-    <button type="submit">Upload</button>
-</form>
+        <form action="{{ url_for('create_album_page') }}" method="POST" enctype="multipart/form-data">
+            <input type="text" name="album_name" required placeholder="Enter album name">
+            <input type="file" name="images" multiple required>
+            <button type="submit">Create Album</button>
+        </form>
+        
 
         
 

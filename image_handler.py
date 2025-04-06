@@ -69,21 +69,16 @@ def convert_image_to_face_id(image_path, file_name):
     
     return encodings[0]
 
-# Compare two images
-def compare_faces(image1_path, image2_path):
-    image1 = load_and_resize_image(image1_path)
-    image2 = load_and_resize_image(image2_path)
-
-    encodings1 = face_recognition.face_encodings(image1)
-    encodings2 = face_recognition.face_encodings(image2)
-
-    print(f"Encodings1: {encodings1}")  # Debugging
-    print(f"Encodings2: {encodings2}")  # Debugging
-
-    if len(encodings1) == 0 or len(encodings2) == 0:
-        print("⚠ No faces found in one or both images!")
-        return False
-
-    match = face_recognition.compare_faces([encodings1[0]], encodings2[0])[0]
-
-    return match
+def compare_faces(uploaded_face_encoding, album_face_encodings):
+    """
+    Compare the uploaded face encoding with all face encodings in the album.
+    Returns a list of matched faces.
+    """
+    matched_faces = []
+    for idx, album_face_encoding in enumerate(album_face_encodings):
+        # Compare the uploaded face with each face encoding in the album
+        matches = face_recognition.compare_faces([album_face_encoding], uploaded_face_encoding)
+        if matches[0]:
+            matched_faces.append(idx)  # Store the index of the matched face
+    
+    return matched_faces

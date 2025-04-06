@@ -3,85 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Album View</title>
+    <title>Album - SnapSearch AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-        }
-        h2 {
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #ff6b6b, #6b6bff, #42b883, #ff7eb3);
+            background-size: 400% 400%;
+            animation: gradientBG 8s ease infinite;
+            color: white;
+            padding: 40px 20px;
             text-align: center;
-            color: #333;
         }
-        .image-container {
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .container h1 {
+            margin-bottom: 10px;
+        }
+
+        .container p {
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .images {
             display: flex;
             flex-wrap: wrap;
+            gap: 20px;
             justify-content: center;
-            gap: 15px;
         }
-        .image-container img {
+
+        .image-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            position: relative;
             width: 150px;
+        }
+
+        .image-card img {
+            width: 100%;
             height: 150px;
             object-fit: cover;
-            border-radius: 10px;
-            border: 2px solid #ccc;
-            transition: transform 0.2s;
+            border-radius: 5px;
+            border: 2px solid white;
         }
-        .image-container img:hover {
-            transform: scale(1.1);
+
+        .download-btn {
+            margin-top: 8px;
+            display: inline-block;
+            font-size: 14px;
+            padding: 6px 12px;
+            background: #222;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
         }
-        .section {
-            margin-bottom: 30px;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        .back-btn {
+            margin-top: 30px;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: #000;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-    <h2>Album: {{ album_id }}</h2>
+    <div class="container">
+        <h1>Album: {{ album.album_name }}</h1>
+        <p>Album Code: {{ album.album_code }}</p>
+        <a href="{{ url_for('download_album', album_id=album.id) }}" class="download-btn" style="margin-bottom: 20px; display: inline-block;">
+            ⬇ Download All Images (ZIP)
+        </a>
+        
+        
+        <div class="images">
+            {% for img in images %}
+            <div class="image-card">
+                <img src="{{ url_for('uploaded_file', album_id=album.id, filename=img.image_path.split('/')[-1]) }}" alt="Album Image">
+<a href="{{ url_for('uploaded_file', album_id=album.id, filename=img.image_path.split('/')[-1]) }}" download class="download-btn">Download</a>
 
-{% if uploaded_images %}
-    <h3>Uploaded Images</h3>
-    <div>
-        {% for img_url in uploaded_images %}
-            <img src="{{ img_url }}" alt="Album Image" width="200">
-        {% endfor %}
-    </div>
-{% else %}
-    <p>No images uploaded yet.</p>
-{% endif %}
-
-{% if matched_faces %}
-    <h3>Matched Faces</h3>
-    <div>
-        {% for match_url in matched_faces %}
-            <img src="{{ match_url }}" alt="Matched Face" width="200">
-        {% endfor %}
-    </div>
-{% else %}
-    <p>No matched faces found.</p>
-{% endif %}
-
-
- 
+            </div>
+            {% endfor %}
         </div>
-    </div>
 
-    <div class="section">
-        <h3>Matched Faces</h3>
-        <div class="image-container">
-            {% if matched_faces %}
-                {% for image in matched_faces %}
-                    <img src="{{ image }}" alt="Matched Face">
-                {% endfor %}
-            {% else %}
-                <p>No matched faces found in this album.</p>
-            {% endif %}
-        </div>
+        <a href="{{ url_for('homepage') }}" class="back-btn">⬅ Back to Homepage</a>
     </div>
 
 </body>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join Album</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            text-align: center;
+            padding-top: 100px;
+        }
+        form {
+            background: rgba(255,255,255,0.1);
+            display: inline-block;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        input[type="text"], input[type="submit"] {
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        input[type="text"] {
+            width: 200px;
+        }
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        .flashes {
+            margin-bottom: 20px;
+            padding: 0;
+            list-style-type: none;
+        }
+        .error {
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+        .success {
+            color: #00ff99;
+            font-weight: bold;
+        }
+        .info {
+            color: #fff8a6;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Join an Album</h1>
+
+    <!-- Show flash messages here -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <input type="text" name="album_code" placeholder="Enter Album Code" required>
+        <br>
+        <input type="submit" value="Join Album">
+    </form>
+</body>
+</html>

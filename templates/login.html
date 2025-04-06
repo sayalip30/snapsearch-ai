@@ -83,6 +83,15 @@
             box-shadow: 0 6px 20px rgba(46, 155, 110, 0.4);
         }
 
+        .flash {
+            background-color: rgba(255, 0, 0, 0.8);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
         p {
             margin-top: 10px;
             font-size: 0.9rem;
@@ -104,6 +113,15 @@
 
     <div class="container">
         <h1>Login</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <form action="{{ url_for('login') }}" method="POST">
             <div class="form-group">
                 <label>Email:</label>

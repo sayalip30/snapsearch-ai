@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Albums - SnapSearch AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #ff6b6b, #6b6bff, #42b883, #ff7eb3);
+            background-size: 400% 400%;
+            animation: gradientBG 8s ease infinite;
+            color: white;
+            text-align: center;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 12px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            background: linear-gradient(90deg, #42b883, #2e9b6e);
+            color: white;
+            transition: 0.3s;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(90deg, #2e9b6e, #1e7b5b);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(46, 155, 110, 0.4);
+        }
+
+        #albums-list {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>My Albums</h1>
+        <div id="albums-list">
+            {% if albums %}
+                {% for album in albums %}
+                    <a href="{{ url_for('view_album', album_id=album.id) }}" class="btn">📂 {{ album.name }}</a>
+                {% endfor %}
+            {% else %}
+                <p>No albums found.</p>
+            {% endif %}
+        </div>
+        <a href="{{ url_for('homepage') }}" class="btn">⬅ Back</a>
+    </div>
+
+</body>
+</html>
