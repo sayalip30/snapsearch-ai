@@ -17,5 +17,11 @@ flask-session
 redis
 mysql-connector-python
 mysqlclient==2.1.1
+Flask
+flask_sqlalchemy
+flask_mail
+mysql-connector-python
+face_recognition
+python-dotenv
 
 
