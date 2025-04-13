@@ -16,8 +16,8 @@ from functools import wraps
 import face_recognition
 
 app = Flask(__name__)
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "your_default_secret_key")  # Change to use environment variables
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "mysql+mysqlconnector://root:pandav91@localhost/face_matching")  # Use env for DB URL
+app.secret_key = "1212"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:pandav91@localhost/face_matching"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -87,22 +87,28 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
+
 def compare_faces(uploaded_encoding, album_encodings):
     matched_indices = []
     for idx, album_encoding in enumerate(album_encodings):
+        # Compare each face encoding with the uploaded encoding
         if uploaded_encoding is not None and album_encoding is not None:
             matches = face_recognition.compare_faces([album_encoding], uploaded_encoding)
-            if matches[0]:
+            if matches[0]:  # True if faces match
                 matched_indices.append(idx)
     return matched_indices
 
+
 def get_face_encoding_for_image(image_path):
+    # Load the image file into numpy array
     image = face_recognition.load_image_file(image_path)
+    # Try to find faces in the image
     face_encodings = face_recognition.face_encodings(image)
 
     if face_encodings:
-        return face_encodings[0]
-    return None
+        return face_encodings[0]  # Return the first face encoding
+    return None  # Return None if no faces are found
 
 # ------------------ Auth Routes ------------------
 @app.route('/signup', methods=['GET', 'POST'])
@@ -133,6 +139,7 @@ def signup():
 
         session['user_id'] = new_user.id
         
+        # After the user is created, compare their face with album images
         user_id = new_user.id
         user_albums = Album.query.filter_by(user_id=user_id).all()
 
@@ -168,9 +175,10 @@ def signup():
             })
 
         flash("Account created successfully! Please log in to continue.", "success")
-        return redirect(url_for('login'))
+        return redirect(url_for('login'))  # Redirect to login page after successful sign up
 
     return render_template("signup.html")
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -212,14 +220,17 @@ def homepage():
         images = AlbumImage.query.filter_by(album_id=album.id).all()
         image_paths = [url_for('uploaded_file', album_id=album.id, filename=os.path.basename(img.image_path)) for img in images]
 
+        # Get all the face encodings for the album's images
         album_face_encodings = []
         for img in images:
             face_encoding = get_face_encoding_for_image(img.image_path)
             album_face_encodings.append(face_encoding)
 
+        # Now compare the user's face with the album's images
         uploaded_face_encoding = get_face_encoding_for_image(user.image_path)
         matched_face_indices = compare_faces(uploaded_face_encoding, album_face_encodings)
 
+        # Store matched face images with the album data
         matched_images = [image_paths[idx] for idx in matched_face_indices]
 
         albums_data.append({
@@ -228,10 +239,11 @@ def homepage():
             'album_code': album.album_code,
             'creator_username': creator.face_id if creator else "Unknown",
             'images': image_paths,
-            'matched_images': matched_images
+            'matched_images': matched_images  # Add matched faces to album data
         })
 
     return render_template('homepage.html', user_albums=albums_data)
+
 
 @app.route('/create_album_page', methods=['GET', 'POST'])
 @login_required
@@ -305,17 +317,31 @@ def uploaded_file(album_id, filename):
 @login_required
 def download_album(album_id):
     images = AlbumImage.query.filter_by(album_id=album_id).all()
+    zip_buffer = io.BytesIO()
 
-    album_folder = os.path.join(app.config["UPLOAD_FOLDER"], "uploads", str(album_id))
-    zip_filename = f"album_{album_id}.zip"
-    zip_path = os.path.join(app.config["UPLOAD_FOLDER"], zip_filename)
-
-    with zipfile.ZipFile(zip_path, 'w') as album_zip:
+    with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
         for img in images:
-            img_path = os.path.join(album_folder, os.path.basename(img.image_path))
-            album_zip.write(img_path, os.path.basename(img.image_path))
+            full_path = os.path.join(app.config['UPLOAD_FOLDER'], "uploads", str(album_id), os.path.basename(img.image_path))
+            zip_file.write(full_path, arcname=os.path.basename(img.image_path))
 
-    return send_file(zip_path, as_attachment=True)
+    zip_buffer.seek(0)
+    return send_file(zip_buffer, as_attachment=True, download_name=f'album_{album_id}.zip', mimetype='application/zip')
 
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route('/reset-db')
+def reset_db():
+    db.session.execute(text("SET FOREIGN_KEY_CHECKS = 0"))
+    db.session.execute(text("TRUNCATE TABLE album_images"))
+    db.session.execute(text("TRUNCATE TABLE user_albums"))
+    db.session.execute(text("TRUNCATE TABLE album_members"))
+    db.session.execute(text("TRUNCATE TABLE face"))
+    db.session.execute(text("SET FOREIGN_KEY_CHECKS = 1"))
+    db.session.commit()
+    return "✅ All tables cleared!"
+
+# ------------------ Run Server ------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, port=5002)
