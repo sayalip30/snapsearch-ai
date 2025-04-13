@@ -1,1 +1,1 @@
-web: gunicorn image_store:app
+web: python image_store.py

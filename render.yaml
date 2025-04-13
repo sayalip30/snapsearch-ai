@@ -1,13 +1,26 @@
-version: 1
 services:
   - type: web
-    name: snapsearch
+    name: snapsearch-ai
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "flask run --host 0.0.0.0"
-    envVars:
-      - key: FLASK_SECRET_KEY
-        fromDatabase: "secret-key"
-      - key: DATABASE_URL
-        value: "mysql+mysqlconnector://root:password@localhost/face_matching"
+    region: oregon
     plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python image_store.py"
+    envVars:
+      - key: MYSQL_USER
+        value: root
+      - key: MYSQL_PASSWORD
+        value: pandav91
+      - key: MYSQL_HOST
+        value: localhost
+      - key: MYSQL_DB
+        value: snapsearch
+      - key: SECRET_KEY
+        value: 1212
+      - key: MAIL_USERNAME
+        value: sayali.rpandav@gmail.com
+      - key: aenlsdovnwkwsigf
+        value: your_app_password
+      # Uncomment if you’re using Redis
+      # - key: REDIS_URL
+      #   value: redis://default:<password>@<host>:<port>
