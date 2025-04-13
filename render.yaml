@@ -1,11 +1,10 @@
 services:
   - type: web
     name: snapsearch-ai
-    env: python
+    env: docker
     region: oregon
     plan: free
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python image_store.py"
+    dockerfilePath: Dockerfile
     envVars:
       - key: MYSQL_USER
         value: root
@@ -19,8 +18,5 @@ services:
         value: 1212
       - key: MAIL_USERNAME
         value: sayali.rpandav@gmail.com
-      - key: aenlsdovnwkwsigf
+      - key: MAIL_PASSWORD
         value: your_app_password
-      # Uncomment if you’re using Redis
-      # - key: REDIS_URL
-      #   value: redis://default:<password>@<host>:<port>
